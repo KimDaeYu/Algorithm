@@ -1,6 +1,4 @@
-from decimal import MIN_EMIN
 from itertools import combinations
-from struct import unpack 
 import sys
 n = input()
 sic = input()
