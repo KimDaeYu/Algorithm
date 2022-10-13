@@ -31,7 +31,7 @@ if(total_enemy == 0):
     exit()
 
 for idx, vals in enumerate(batch_list): 
-    #궁수 배치
+    #archer batch
     archer = [0] * M
     for _ in vals:
         archer[_] = 1
@@ -43,24 +43,24 @@ for idx, vals in enumerate(batch_list):
     test_map = copy.deepcopy(map)
     target_map = [[0] * M for i in range(N)]
 
-    # 적 탐색
+    # enemy search
     def aiming(test_map, archer_idx):
         last_idx = len(test_map)-1
-        # 1 초기 체크
+        # 1 init check 
         if(test_map[last_idx][archer_idx]):
             return [last_idx, archer_idx]
 
-        # range만큼 2~
+        # range as 2~
         for i in range(1, D):
             for j in range(-i,i+1,1):
                 if(last_idx - (i - abs(j)) > 0 and 
                     -1 < archer_idx + j and archer_idx + j < M):
                     if(test_map[last_idx - (i - abs(j))][archer_idx + j]):
-                        # 선택 완료
+                        # selected
                         return [last_idx - (i - abs(j)), archer_idx + j]
                     
     while(len(test_map) > 0):
-        #궁수별 적 할당
+        #enemy select for archer
         target_list = []
         target_map = [[0] * M for i in range(len(test_map))]
 
@@ -70,7 +70,7 @@ for idx, vals in enumerate(batch_list):
                 _target = aiming(test_map, archer_idx)
                 if(_target):
                     target_map[_target[0]][_target[1]] = 1
-        # 적 제거
+        # delete enemy
         for i in range(len(target_map)):
             for j in range(len(target_map[0])):
                 if(target_map[i][j] == 1):
@@ -78,7 +78,7 @@ for idx, vals in enumerate(batch_list):
                     # print(i,j)
                     test_map[i][j] = 0
                     killed += 1
-        # 적 내려옴
+        # enemy down
         test_map.pop()
 
     answer = max(answer, killed)
